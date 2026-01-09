@@ -35,19 +35,20 @@ body {
 
 /* Links */
 a {
-    color: var(--color-text);
+    color: var(--color-text) !important;
     text-decoration: none;
     transition: opacity 0.2s;
 }
 
 a:hover,
 a:visited,
-a:active {
-    color: var(--color-text);
+a:active,
+a:focus {
+    color: var(--color-text) !important;
 }
 
 /* Remove mobile tap highlight */
-a, button {
+a, button, .nav-item {
     -webkit-tap-highlight-color: transparent;
 }
 
