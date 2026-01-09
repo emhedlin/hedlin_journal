@@ -130,13 +130,13 @@ a:hover {
     display: flex;
     align-items: center;
     padding: 0.75rem 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     font-size: 0.9rem;
     color: var(--color-muted);
     background: none;
     border: none;
     cursor: pointer;
-    width: fit-content;
+    width: 100%;
 }
 
 .nav-back:hover {
@@ -144,12 +144,12 @@ a:hover {
 }
 
 /* Indentation for nested levels */
-.nav-level[data-level="months"] {
+#months-container {
     padding-left: 1rem;
 }
 
-.nav-level[data-level="entries"] {
-    padding-left: 2rem;
+#entries-container {
+    padding-left: 1rem;
 }
 
 /* Entry Item in Navigation */
@@ -157,7 +157,8 @@ a:hover {
     flex-direction: row;
     text-decoration: none;
     gap: 1rem;
-    padding: 0.5rem 0;
+    padding: 0.75rem 0;
+    align-items: flex-start;
 }
 
 .entry-day {
@@ -171,9 +172,9 @@ a:hover {
 .entry-preview {
     color: var(--color-muted);
     font-size: 0.9rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.5;
+    /* Allow multi-line text with proper breaking */
+    max-width: 50ch;  /* Optimal line length for readability */
 }
 
 /* Entry Page */

@@ -44,11 +44,39 @@ class JournalAccordion {
 
         // Keyboard navigation
         this.accordion.addEventListener('keydown', (e) => this.handleKeydown(e));
+
+        // Check URL hash for navigation state (e.g., #1983-7 for July 1983)
+        this.handleHashOnLoad();
+    }
+
+    handleHashOnLoad() {
+        const hash = window.location.hash;
+        if (hash) {
+            // Parse hash format: #year-month (e.g., #1983-7) or #year (e.g., #1983)
+            const matchMonth = hash.match(/^#(\d+)-(\d+)$/);
+            const matchYear = hash.match(/^#(\d+)$/);
+
+            if (matchMonth) {
+                const year = parseInt(matchMonth[1]);
+                const month = parseInt(matchMonth[2]);
+                // Navigate to the year and show entries for that month
+                this.showMonths(year);
+                setTimeout(() => {
+                    this.showEntries(year, month);
+                }, 50);
+            } else if (matchYear) {
+                const year = parseInt(matchYear[1]);
+                // Just show the months for this year
+                this.showMonths(year);
+            }
+        }
     }
 
     showMonths(year) {
         this.currentYear = year;
         this.monthsYearSpan.textContent = year;
+        // Update hash to reflect current year
+        window.location.hash = `${year}`;
 
         // Clear and populate months
         this.monthsContainer.innerHTML = '';
@@ -95,6 +123,8 @@ class JournalAccordion {
         const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                            'July', 'August', 'September', 'October', 'November', 'December'];
         this.entriesMonthYearSpan.textContent = `${monthNames[month - 1]} ${year}`;
+        // Update hash to reflect current year and month
+        window.location.hash = `${year}-${month}`;
 
         // Clear and populate entries
         this.entriesContainer.innerHTML = '';
@@ -135,6 +165,8 @@ class JournalAccordion {
     showYears() {
         this.currentYear = null;
         this.currentMonth = null;
+        // Clear hash
+        window.location.hash = '';
 
         // Transition
         this.yearsLevel.hidden = false;
