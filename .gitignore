@@ -5,7 +5,6 @@ venv/
 # Generated output
 output/
 data/
-content/
 
 # Python
 __pycache__/
