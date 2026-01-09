@@ -311,6 +311,12 @@ def generate_site(
         shutil.copytree(content_dir / "images", images_output, dirs_exist_ok=True)
         console.print(f"  [dim]images/[/dim]")
 
+    # Copy .nojekyll to disable Jekyll processing on GitHub Pages
+    nojekyll_src = Path(".nojekyll")
+    if nojekyll_src.exists():
+        shutil.copy(nojekyll_src, output_dir / ".nojekyll")
+        console.print(f"  [dim].nojekyll[/dim]")
+
     console.print(f"\n[green]Site generated successfully![/green]")
     console.print(f"[green]Output directory:[/green] {output_dir}")
     console.print(f"  [dim]index.html, {len(entries)} entry pages[/dim]")
