@@ -1,15 +1,14 @@
-# Hedlin Family Journal
 
 A static website generator for family journals, built from Microsoft Word (DOCX) files. Features an interactive timeline, search capabilities, and PDF export.
 
 ## Features
 
-- 📝 **DOCX Import** - Parse journal entries from Word documents
-- 📅 **Interactive Timeline** - Canvas-based timeline with hover previews
-- 🔍 **Semantic Search** - Powered by sentence-transformers embeddings
-- 📄 **PDF Export** - Generate print-ready books (6" × 9" format)
-- 🎨 **Classic Design** - Elegant typography matching traditional journals
-- 🚀 **Static Site** - Fast, secure, easy to deploy
+- **DOCX Import** - Parse journal entries from Word documents
+- **Interactive Timeline** - Canvas-based timeline with hover previews
+- **Semantic Search** - Powered by sentence-transformers embeddings
+- **PDF Export** - Generate print-ready books (6" × 9" format)
+- **Classic Design** - Elegant typography matching traditional journals
+- **Static Site** - Fast, secure, easy to deploy
 
 ## Quick Start
 
