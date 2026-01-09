@@ -1,64 +1,68 @@
 {% extends "base.html" %}
 
+{% block title %}Journal{% endblock %}
+
 {% block content %}
-<div class="home-page">
-    <section class="intro-section">
-        <h2>Welcome to the Hedlin Family Journal</h2>
-        <p class="intro-text">
-            Time is easier to understand once all its pieces are set out to be looked at and talked about.
-            Here an account of who we were, what we thought, what we talked about, what we ate and read and played at,
-            and who were our friends and family.
-        </p>
-        <p class="intro-text">
-            Some things carry on from start to finish, some things appear briefly and vanish.
-            We can see what is our bedrock, what is transitional, what is memorable, what we wish we had done more,
-            or differently, or not at all.
-        </p>
-    </section>
+<div class="accordion-nav" id="accordion">
+    <!-- Years Level -->
+    <div class="nav-level" data-level="years">
+        {% for year in years %}
+        <button class="nav-item{% if not year.has_entries %} muted{% endif %}"
+                data-year="{{ year.year }}">
+            {{ year.year }}
+        </button>
+        {% endfor %}
+    </div>
 
-    <nav class="quick-nav">
-        <a href="{{ url_path }}/timeline.html" class="nav-card">
-            <h3>📅 Timeline</h3>
-            <p>Explore entries chronologically with our interactive timeline</p>
-        </a>
-        <a href="{{ url_path }}/archive.html" class="nav-card">
-            <h3>📚 Archive</h3>
-            <p>Browse all entries by year and month</p>
-        </a>
-    </nav>
+    <!-- Months Level -->
+    <div class="nav-level" data-level="months" hidden>
+        <button class="nav-back" id="months-back">← <span id="months-year"></span></button>
+        <div id="months-container"></div>
+    </div>
 
-    <section class="recent-entries">
-        <h2>Recent Entries</h2>
-        <ul class="entry-list">
-            {% for entry in recent_entries %}
-            <li class="entry-summary">
-                <a href="{{ url_path }}{{ entry.url }}">
-                    <time class="entry-summary-date">{{ entry.date_display }}</time>
-                    <span class="entry-summary-preview">{{ entry.preview }}</span>
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% if total_entries > recent_count %}
-        <p class="more-link">
-            <a href="{{ url_path }}/archive.html">View all {{ total_entries }} entries →</a>
-        </p>
-        {% endif %}
-    </section>
-
-    {% if years %}
-    <section class="years-overview">
-        <h2>Browse by Year</h2>
-        <ul class="years-list">
-            {% for year, count in years %}
-            <li>
-                <a href="{{ url_path }}/archive.html#{{ year }}">
-                    {{ year }} <span class="count">({{ count }} entries)</span>
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+    <!-- Entries Level -->
+    <div class="nav-level" data-level="entries" hidden>
+        <button class="nav-back" id="entries-back">← <span id="entries-month-year"></span></button>
+        <div id="entries-container"></div>
+    </div>
 </div>
+
+<script>
+// Data embedded directly for instant loading
+const journalData = {
+    years: [
+        {% for year in years %}
+        { year: {{ year.year }}, hasEntries: {{ 'true' if year.has_entries else 'false' }} }{{ ',' if not loop.last }}
+        {% endfor %}
+    ],
+    months: {
+        {% for year_data in months_by_year %}
+        {{ year_data.year }}: [
+            {% for month in year_data.months %}
+            { name: "{{ month.name }}", number: {{ month.number }}, hasEntries: {{ 'true' if month.has_entries else 'false' }} }{{ ',' if not loop.last }}
+            {% endfor %}
+        ]{{ ',' if not loop.last }}
+        {% endfor %}
+    },
+    entries: {
+        {%- set entry_months = [] %}
+        {%- for year_data in months_by_year %}
+            {%- for month in year_data.months %}
+                {%- if month.has_entries %}
+                    {%- set _ = entry_months.append((year_data.year, month.number, month.entries)) %}
+                {%- endif %}
+            {%- endfor %}
+        {%- endfor %}
+        {%- for year, month_num, entries in entry_months %}
+        "{{ year }}-{{ month_num }}": [
+            {%- for entry in entries %}
+            { day: {{ entry.day }}, url: "{{ url_path }}{{ entry.url }}", preview: "{{ entry.preview }}" }{{ ',' if not loop.last }}
+            {%- endfor %}
+        ]{{ ',' if not loop.last }}
+        {%- endfor %}
+    }
+};
+</script>
+
+<script src="{{ url_path }}/static/js/accordion.js"></script>
 {% endblock %}

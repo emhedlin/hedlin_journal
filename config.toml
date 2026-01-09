@@ -1,0 +1,17 @@
+# Hedlin Family Journal Configuration
+
+[theme]
+# Color palette - greyscale only
+background = "#f5f5f5"
+text = "#131313"
+muted = "#999999"
+border = "#e0e0e0"
+hover = "#000000"
+
+[preview]
+# Number of words to show in entry preview
+word_count = 8
+
+[site]
+title = "A Hedlin Family Journal"
+subtitle = ""

@@ -5,21 +5,27 @@ Generate static HTML from Markdown journal entries.
 This script:
 1. Reads all Markdown files in content/
 2. Converts Markdown to HTML
-3. Generates index, archive, timeline, and individual entry pages
+3. Generates index, archive, and individual entry pages
 4. Copies static assets
 """
 
 import argparse
 import json
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import markdown
 from jinja2 import Environment, FileSystemLoader
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from load_config import load_config
 
 console = Console()
 
@@ -69,7 +75,15 @@ def markdown_to_html(markdown_text: str) -> str:
     return md.convert(markdown_text)
 
 
-def load_entries(content_dir: Path) -> List[Dict]:
+def get_entry_preview(content: str, word_count: int = 8) -> str:
+    """Get first N words from content as preview."""
+    # Strip HTML tags for preview
+    text = re.sub(r'<[^>]+>', '', content)
+    words = text.split()[:word_count]
+    return ' '.join(words)
+
+
+def load_entries(content_dir: Path, config) -> List[Dict]:
     """Load all journal entries from Markdown files."""
     entries = []
 
@@ -92,13 +106,8 @@ def load_entries(content_dir: Path) -> List[Dict]:
         # Convert content to HTML
         content_html = markdown_to_html(parsed['body'])
 
-        # Get preview (first paragraph, stripped of HTML)
-        preview_match = re.search(r'<p>(.*?)</p>', content_html, re.DOTALL)
-        preview = ""
-        if preview_match:
-            # Strip HTML tags for preview
-            preview_text = re.sub(r'<[^>]+>', '', preview_match.group(1))
-            preview = preview_text[:150] + "..." if len(preview_text) > 150 else preview_text
+        # Get preview
+        preview = get_entry_preview(content_html, config.preview.word_count)
 
         entries.append({
             'date': date_str,
@@ -122,42 +131,70 @@ def load_entries(content_dir: Path) -> List[Dict]:
     return entries
 
 
-def group_entries_by_year_month(entries: List[Dict]) -> List[Dict]:
-    """Group entries by year and month for archive page."""
-    years = {}
+def build_year_hierarchy(entries: List[Dict]) -> tuple:
+    """Build data structures for accordion navigation.
 
+    Returns:
+        - years: List of year dicts with year and has_entries
+        - months_by_year: Data structure with months for each year
+    """
+    if not entries:
+        return [], []
+
+    # Find min year from entries (or default to 1983)
+    min_year_from_entries = min(e['year'] for e in entries)
+    start_year = min(1983, min_year_from_entries)
+
+    # Current year
+    current_year = datetime.now().year
+
+    # Group entries by year-month
+    year_month_entries = {}
     for entry in entries:
         year = entry['year']
         month = entry['month']
+        key = (year, month)
 
-        if year not in years:
-            years[year] = {'count': 0, 'months': {}}
+        if key not in year_month_entries:
+            year_month_entries[key] = []
+        year_month_entries[key].append(entry)
 
-        years[year]['count'] += 1
-
-        if month not in years[year]['months']:
-            years[year]['months'][month] = []
-
-        years[year]['months'][month].append(entry)
-
-    # Convert to sorted list
-    result = []
-    for year in sorted(years.keys(), reverse=True):
-        months = []
-        for month in sorted(years[year]['months'].keys()):
-            months.append({
-                'name': MONTH_NAMES[month - 1],
-                'number': month,
-                'entries': years[year]['months'][month]
-            })
-
-        result.append({
+    # Build years list (full range 1983 -> current year)
+    years = []
+    for year in range(start_year, current_year + 1):
+        year_entries = [e for e in entries if e['year'] == year]
+        years.append({
             'year': year,
-            'count': years[year]['count'],
-            'months': months
+            'has_entries': len(year_entries) > 0
         })
 
-    return result
+    # Build months_by_year structure
+    months_by_year = []
+    for year in range(start_year, current_year + 1):
+        year_data = {
+            'year': year,
+            'months': []
+        }
+
+        for month in range(1, 13):
+            # Check if there are entries for this year-month
+            month_entries = year_month_entries.get((year, month), [])
+            # Sort entries by day ascending (oldest first)
+            month_entries = sorted(month_entries, key=lambda e: e['day'])
+            has_entries = len(month_entries) > 0
+
+            month_name = MONTH_NAMES[month - 1]
+
+            year_data['months'].append({
+                'name': month_name,
+                'number': month,
+                'has_entries': has_entries,
+                'entries': month_entries
+            })
+
+        months_by_year.append(year_data)
+
+    return years, months_by_year
 
 
 def generate_site(
@@ -165,26 +202,32 @@ def generate_site(
     output_dir: Path,
     template_dir: Path,
     static_dir: Path,
-    url_path: str = ""
+    url_path: str = "",
+    config_file: Path = None
 ) -> int:
     """Generate the static site."""
 
+    # Load configuration
+    config = load_config(config_file)
+    config_css = config.to_css_vars()
+
     # Load entries
     console.print("[bold]Loading journal entries...[/bold]")
-    entries = load_entries(content_dir)
+    entries = load_entries(content_dir, config)
     console.print(f"  [green]Found {len(entries)} entries[/green]")
 
     if not entries:
         console.print("[yellow]No entries found![/yellow]")
         return 1
 
+    # Build navigation data
+    years, months_by_year = build_year_hierarchy(entries)
+
     # Setup Jinja2
     env = Environment(loader=FileSystemLoader(template_dir))
     base_template = env.get_template('base.html')
     entry_template = env.get_template('entry.html')
     index_template = env.get_template('index.html')
-    archive_template = env.get_template('archive.html')
-    timeline_template = env.get_template('timeline.html')
 
     # Create output directories
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -193,8 +236,9 @@ def generate_site(
 
     # Common context
     common_context = {
+        'config': config,
+        'config_css': config_css,
         'url_path': url_path,
-        'year': datetime.now().year
     }
 
     with Progress(
@@ -202,43 +246,16 @@ def generate_site(
         TextColumn("[progress.description]{task.description}"),
         console=console
     ) as progress:
-        task = progress.add_task("Generating pages...", total=3)
+        task = progress.add_task("Generating pages...", total=2)
 
-        # Generate index page
+        # Generate index page with accordion navigation
         progress.update(task, description="Generating index...")
-        entries_by_year = group_entries_by_year_month(entries)
-
-        # Get years for navigation
-        years = sorted(set(e['year'] for e in entries))
-
         index_html = index_template.render(
             **common_context,
-            recent_entries=entries[:10],
-            total_entries=len(entries),
-            recent_count=10,
-            years=[(y, sum(1 for e in entries if e['year'] == y)) for y in years]
+            years=years,
+            months_by_year=months_by_year
         )
         (output_dir / "index.html").write_text(index_html, encoding='utf-8')
-        progress.update(task, advance=1)
-
-        # Generate archive page
-        progress.update(task, description="Generating archive...")
-        archive_html = archive_template.render(
-            **common_context,
-            entries_by_year=entries_by_year,
-            years=years
-        )
-        (output_dir / "archive.html").write_text(archive_html, encoding='utf-8')
-        progress.update(task, advance=1)
-
-        # Generate timeline page
-        progress.update(task, description="Generating timeline...")
-        timeline_html = timeline_template.render(
-            **common_context,
-            years=years,
-            entries=entries
-        )
-        (output_dir / "timeline.html").write_text(timeline_html, encoding='utf-8')
         progress.update(task, advance=1)
 
         # Generate entry pages
@@ -292,28 +309,9 @@ def generate_site(
         shutil.copytree(content_dir / "images", images_output, dirs_exist_ok=True)
         console.print(f"  [dim]images/[/dim]")
 
-    # Write entry data for timeline (JSON)
-    entry_data = {
-        'entries': [
-            {
-                'date': e['date'],
-                'title': e['title'],
-                'preview': e['preview'],
-                'url': e['url'],
-                'has_images': len(e.get('images', [])) > 0
-            }
-            for e in entries
-        ]
-    }
-    (output_dir / "static" / "js" / "entries.json").write_text(
-        json.dumps(entry_data, indent=2),
-        encoding='utf-8'
-    )
-
     console.print(f"\n[green]Site generated successfully![/green]")
     console.print(f"[green]Output directory:[/green] {output_dir}")
-    console.print(f"  [dim]index.html, archive.html, timeline.html[/dim]")
-    console.print(f"  [dim]{len(entries)} entry pages[/dim]")
+    console.print(f"  [dim]index.html, {len(entries)} entry pages[/dim]")
 
     return 0
 
@@ -352,6 +350,12 @@ def main():
         default="",
         help="URL path prefix (e.g., '/journal')"
     )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=Path("config.toml"),
+        help="Configuration file (default: config.toml)"
+    )
 
     args = parser.parse_args()
 
@@ -360,7 +364,8 @@ def main():
         output_dir=args.output,
         template_dir=args.templates,
         static_dir=args.static,
-        url_path=args.url_path
+        url_path=args.url_path,
+        config_file=args.config
     )
 
 

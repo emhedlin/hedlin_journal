@@ -1,24 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}{{ entry.title }} - Hedlin Family Journal{% endblock %}
+{% block title %}{{ entry.date_display }}{% endblock %}
 
 {% block content %}
+<nav class="entry-page-nav">
+    <button onclick="history.back()">← Back</button>
+</nav>
+
 <article class="entry">
     <header class="entry-header">
-        <h1 class="entry-title">{{ entry.title }}</h1>
-        <p class="entry-date">{{ entry.date_display }}</p>
+        <h1 class="entry-date">{{ entry.date_display }}</h1>
+
+    {% if entry.prev or entry.next %}
+    <div class="entry-nav">
         {% if entry.prev %}
-        <a class="entry-nav entry-prev" href="{{ url_path }}{{ entry.prev }}">← Previous</a>
+        <a href="{{ url_path }}{{ entry.prev }}">← Previous</a>
         {% endif %}
         {% if entry.next %}
-        <a class="entry-nav entry-next" href="{{ url_path }}{{ entry.next }}">Next →</a>
+        <a href="{{ url_path }}{{ entry.next }}" style="margin-left: auto;">Next →</a>
         {% endif %}
+    </div>
+    {% endif %}
     </header>
 
     {% if entry.images %}
     <div class="entry-images">
         {% for image in entry.images %}
-        <img src="{{ url_path }}{{ image }}" alt="Entry image" loading="lazy">
+        <img src="{{ url_path }}{{ image }}" alt="" loading="lazy">
         {% endfor %}
     </div>
     {% endif %}
@@ -26,26 +34,5 @@
     <div class="entry-content">
         {{ entry.content_html | safe }}
     </div>
-
-    {% if entry.tags or entry.people %}
-    <footer class="entry-meta">
-        {% if entry.tags %}
-        <div class="entry-tags">
-            <strong>Tags:</strong>
-            {% for tag in entry.tags %}
-            <span class="tag">{{ tag }}</span>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% if entry.people %}
-        <div class="entry-people">
-            <strong>People:</strong>
-            {% for person in entry.people %}
-            <span class="person">{{ person }}</span>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </footer>
-    {% endif %}
 </article>
 {% endblock %}
