@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Timeline - Hedlin Family Journal{% endblock %}
+
+{% block extra_head %}
+<style>
+    .timeline-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        margin: 2rem 0;
+        border: 1px solid #ddd;
+        background: #fafafa;
+    }
+    .timeline-canvas {
+        width: 100%;
+        height: 100%;
+    }
+    .timeline-tooltip {
+        position: absolute;
+        background: white;
+        border: 1px solid #333;
+        padding: 0.5rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        pointer-events: none;
+        max-width: 250px;
+        display: none;
+    }
+    .timeline-tooltip.visible {
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="timeline-page">
+    <h1>Interactive Timeline</h1>
+    <p class="timeline-intro">
+        Hover over the timeline to see entry previews. Click to view the full entry.
+    </p>
+
+    <div class="timeline-controls">
+        <button id="zoom-out" class="timeline-btn">− Zoom Out</button>
+        <button id="zoom-in" class="timeline-btn">+ Zoom In</button>
+        <select id="year-filter" class="timeline-select">
+            <option value="">All Years</option>
+            {% for year in years %}
+            <option value="{{ year }}">{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="timeline-container">
+        <canvas id="timeline-canvas" class="timeline-canvas"></canvas>
+        <div id="timeline-tooltip" class="timeline-tooltip"></div>
+    </div>
+
+    <div class="timeline-legend">
+        <span class="legend-item">
+            <span class="legend-dot"></span> Journal Entry
+        </span>
+        <span class="legend-item">
+            <span class="legend-dot legend-dot-image"></span> Entry with Images
+        </span>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_path }}/static/js/timeline.js"></script>
+{% endblock %}

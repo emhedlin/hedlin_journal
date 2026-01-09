@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ entry.title }} - Hedlin Family Journal{% endblock %}
+
+{% block content %}
+<article class="entry">
+    <header class="entry-header">
+        <h1 class="entry-title">{{ entry.title }}</h1>
+        <p class="entry-date">{{ entry.date_display }}</p>
+        {% if entry.prev %}
+        <a class="entry-nav entry-prev" href="{{ url_path }}{{ entry.prev }}">← Previous</a>
+        {% endif %}
+        {% if entry.next %}
+        <a class="entry-nav entry-next" href="{{ url_path }}{{ entry.next }}">Next →</a>
+        {% endif %}
+    </header>
+
+    {% if entry.images %}
+    <div class="entry-images">
+        {% for image in entry.images %}
+        <img src="{{ url_path }}{{ image }}" alt="Entry image" loading="lazy">
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="entry-content">
+        {{ entry.content_html | safe }}
+    </div>
+
+    {% if entry.tags or entry.people %}
+    <footer class="entry-meta">
+        {% if entry.tags %}
+        <div class="entry-tags">
+            <strong>Tags:</strong>
+            {% for tag in entry.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if entry.people %}
+        <div class="entry-people">
+            <strong>People:</strong>
+            {% for person in entry.people %}
+            <span class="person">{{ person }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </footer>
+    {% endif %}
+</article>
+{% endblock %}

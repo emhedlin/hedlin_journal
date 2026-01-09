@@ -1,0 +1,28 @@
+# Virtual environments
+.venv/
+venv/
+
+# Generated output
+output/
+data/
+content/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build_state.json
+journal_entries.json

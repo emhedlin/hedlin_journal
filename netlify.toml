@@ -1,0 +1,11 @@
+[build]
+  publish = "output"
+  command = "python scripts/build_all.py --dev"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

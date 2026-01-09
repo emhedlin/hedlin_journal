@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Archive - Hedlin Family Journal{% endblock %}
+
+{% block content %}
+<div class="archive-page">
+    <h1>Journal Archive</h1>
+
+    {% for year_data in entries_by_year %}
+    <section class="year-section" id="{{ year_data.year }}">
+        <h2 class="year-title">{{ year_data.year }}</h2>
+        <p class="year-count">{{ year_data.count }} entries</p>
+
+        {% for month_data in year_data.months %}
+        <section class="month-section">
+            <h3 class="month-title">{{ month_data.name }} {{ year_data.year }}</h3>
+            <ul class="month-entries">
+                {% for entry in month_data.entries %}
+                <li>
+                    <a href="{{ url_path }}{{ entry.url }}">
+                        <time class="entry-date">{{ entry.date_display }}</time>
+                        {% if entry.preview %}
+                        <span class="entry-preview">{{ entry.preview }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endfor %}
+    </section>
+    {% endfor %}
+</div>
+{% endblock %}

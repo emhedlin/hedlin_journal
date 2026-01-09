@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hedlin Family Journal{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_path }}/static/css/styles.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="journal-container">
+        <header class="journal-header">
+            <div class="header-content">
+                <h1 class="journal-title">A Hedlin Family Journal</h1>
+                {% block header_subtitle %}
+                <p class="journal-subtitle">
+                    This journal is for our boys (Peter 1978, Matthew 1982, Erik 1986).
+                </p>
+                {% endblock %}
+            </div>
+        </header>
+
+        <nav class="journal-nav">
+            <a href="{{ url_path }}/index.html">Home</a>
+            <a href="{{ url_path }}/timeline.html">Timeline</a>
+            <a href="{{ url_path }}/archive.html">Archive</a>
+        </nav>
+
+        <main class="journal-main">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="journal-footer">
+            <p>Hedlin Family Journal &copy; {{ year }}</p>
+        </footer>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

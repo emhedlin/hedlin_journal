@@ -1,0 +1,518 @@
+/* Hedlin Family Journal Styles
+ * Classic journal aesthetic inspired by the original DOCX template
+ */
+
+/* CSS Variables */
+:root {
+    --font-serif: 'Garamond', 'Georgia', 'Times New Roman', serif;
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --color-text: #1a1a1a;
+    --color-muted: #666;
+    --color-accent: #8b2e2e;
+    --color-link: #2e5a8b;
+    --color-border: #ccc;
+    --color-bg: #fefefe;
+    --color-header-bg: #f5f5f0;
+    --spacing-unit: 1.5rem;
+    --max-width: 720px;
+    --line-height: 1.7;
+}
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-serif);
+    line-height: var(--line-height);
+    color: var(--color-text);
+    background: var(--color-bg);
+    min-height: 100vh;
+}
+
+/* Links */
+a {
+    color: var(--color-link);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+a:hover {
+    border-bottom-color: var(--color-link);
+}
+
+/* Layout */
+.journal-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Header */
+.journal-header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+}
+
+.journal-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.journal-subtitle {
+    font-style: italic;
+    color: var(--color-muted);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Navigation */
+.journal-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+}
+
+.journal-nav a {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+    border-bottom: none;
+    padding: 0.5rem 1rem;
+}
+
+.journal-nav a:hover {
+    background: var(--color-header-bg);
+}
+
+/* Main Content */
+.journal-main {
+    min-height: 50vh;
+}
+
+/* Entry Styles */
+.entry {
+    margin-bottom: 3rem;
+}
+
+.entry-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.entry-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    margin-bottom: 0.5rem;
+}
+
+.entry-date {
+    font-style: italic;
+    color: var(--color-muted);
+}
+
+.entry-nav {
+    position: absolute;
+    top: 0;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+}
+
+.entry-prev {
+    left: 0;
+}
+
+.entry-next {
+    right: 0;
+}
+
+/* Entry Content */
+.entry-content {
+    text-align: justify;
+    hyphens: auto;
+}
+
+.entry-content p {
+    margin-bottom: 1.25em;
+    text-indent: 1em;
+}
+
+.entry-content p:first-of-type {
+    text-indent: 0;
+}
+
+.entry-content p:first-of-type::first-letter {
+    font-size: 3rem;
+    float: left;
+    line-height: 1;
+    padding-right: 0.1em;
+    font-weight: bold;
+}
+
+/* Entry Images */
+.entry-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.entry-images img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+}
+
+/* Entry Meta */
+.entry-meta {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+}
+
+.entry-tags,
+.entry-people {
+    margin-bottom: 0.5rem;
+}
+
+.tag,
+.person {
+    display: inline-block;
+    background: var(--color-header-bg);
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Home Page */
+.home-page {
+    text-align: center;
+}
+
+.intro-section {
+    margin-bottom: 3rem;
+}
+
+.intro-text {
+    max-width: 500px;
+    margin: 0 auto 1rem;
+    text-align: justify;
+}
+
+.quick-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+}
+
+.nav-card {
+    display: block;
+    padding: 2rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s;
+}
+
+.nav-card:hover {
+    border-color: var(--color-link);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.nav-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.nav-card p {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+}
+
+/* Entry Lists */
+.entry-list,
+.month-entries {
+    list-style: none;
+    text-align: left;
+}
+
+.entry-summary,
+.month-entries li {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.month-entries li:last-child {
+    border-bottom: none;
+}
+
+.entry-summary a,
+.month-entries a {
+    display: block;
+    text-decoration: none;
+}
+
+.entry-summary-date,
+.entry-date {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.entry-summary-preview,
+.entry-preview {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+}
+
+.more-link {
+    margin-top: 1rem;
+}
+
+/* Archive */
+.archive-page h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.year-section {
+    margin-bottom: 3rem;
+}
+
+.year-title {
+    font-size: 1.75rem;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    margin-bottom: 0.5rem;
+}
+
+.year-count {
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+}
+
+.month-section {
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+}
+
+.month-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* Years Overview */
+.years-list {
+    list-style: none;
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.years-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.count {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+}
+
+/* Timeline */
+.timeline-page {
+    text-align: center;
+}
+
+.timeline-page h1 {
+    margin-bottom: 1rem;
+}
+
+.timeline-intro {
+    color: var(--color-muted);
+    margin-bottom: 2rem;
+}
+
+.timeline-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.timeline-btn,
+.timeline-select {
+    font-family: var(--font-sans);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+}
+
+.timeline-btn:hover,
+.timeline-select:hover {
+    background: var(--color-header-bg);
+}
+
+.timeline-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    margin-right: 0.5rem;
+}
+
+.legend-dot-image {
+    background: var(--color-link);
+}
+
+/* Footer */
+.journal-footer {
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+}
+
+/* Print Styles */
+@media print {
+    :root {
+        --max-width: 6.5in;
+        --spacing-unit: 1rem;
+    }
+
+    body {
+        font-size: 11pt;
+        background: white;
+    }
+
+    .journal-container {
+        max-width: 100%;
+    }
+
+    .journal-nav,
+    .entry-nav,
+    .entry-meta,
+    .journal-footer,
+    .timeline-controls,
+    .timeline-legend,
+    .nav-card {
+        display: none !important;
+    }
+
+    .entry {
+        page-break-inside: avoid;
+    }
+
+    .entry-content p {
+        text-indent: 1em;
+        orphans: 3;
+        widows: 3;
+    }
+
+    .entry-content p:first-of-type {
+        text-indent: 0;
+    }
+
+    .entry-images img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+
+    a {
+        color: var(--color-text);
+        text-decoration: none;
+        border-bottom: none;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: var(--color-muted);
+    }
+
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    @page {
+        margin: 0.75in;
+        size: letter;
+    }
+
+    .entry-title {
+        page-break-after: avoid;
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .journal-title {
+        font-size: 1.5rem;
+    }
+
+    .entry-nav {
+        position: static;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    .quick-nav {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-controls {
+        flex-direction: column;
+    }
+}

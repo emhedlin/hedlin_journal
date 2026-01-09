@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A Hedlin Family Journal</title>
+    <style>
+        @page {
+            size: 6in 9in;
+            margin: 0.75in;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Garamond", "Georgia", "Times New Roman", serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+        }
+
+        .title-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 9in;
+            text-align: center;
+            page-break-after: always;
+        }
+
+        .title-page h1 {
+            font-size: 24pt;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 2rem;
+        }
+
+        .title-page p {
+            font-style: italic;
+            color: #666;
+            max-width: 350px;
+            margin: 0.5rem auto;
+        }
+
+        .toc-page {
+            page-break-after: always;
+            padding-top: 1in;
+        }
+
+        .toc-page h2 {
+            text-align: center;
+            font-size: 18pt;
+            margin-bottom: 2rem;
+            text-decoration: underline;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .toc-date {
+            font-weight: 600;
+            color: #8b2e2e;
+        }
+
+        .toc-page-num {
+            color: #666;
+        }
+
+        .year-header {
+            text-align: center;
+            font-size: 16pt;
+            font-weight: bold;
+            margin: 1.5rem 0 1rem;
+            text-decoration: underline;
+            page-break-after: avoid;
+        }
+
+        .entry {
+            margin-bottom: 1.5rem;
+            page-break-inside: avoid;
+        }
+
+        .entry-header {
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .entry-date {
+            font-size: 13pt;
+            font-weight: bold;
+        }
+
+        .entry-content p {
+            margin-bottom: 0.75em;
+            text-align: justify;
+            text-indent: 1.5em;
+        }
+
+        .entry-content p:first-of-type {
+            text-indent: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Title Page -->
+    <div class="title-page">
+        <h1>A HEDLIN FAMILY JOURNAL</h1>
+        <p>This journal is for our boys (Peter 1978, Matthew 1982, Erik 1986).</p>
+        <p>Time is easier to understand once all its pieces are set out to be looked at and talked about.</p>
+        <p>Here an account of who we were, what we thought, what we talked about,</p>
+        <p>what we ate and read and played at, and who were our friends and family.</p>
+        <p style="margin-top: 2rem;">Generated {{ generated_date }}</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc-page">
+        <h2>Table of Contents</h2>
+        <ul class="toc-list">
+            {% for entry in entries %}
+            <li class="toc-item">
+                <span class="toc-date">{{ entry.date_display }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Entries -->
+    {% for entry in entries %}
+    {% if entry.new_year %}
+    <div class="year-header">{{ entry.year }}</div>
+    {% endif %}
+
+    <article class="entry">
+        <header class="entry-header">
+            <h3 class="entry-date">{{ entry.date_display }}</h3>
+        </header>
+
+        <div class="entry-content">
+            {{ entry.content_html | safe }}
+        </div>
+    </article>
+    {% endfor %}
+</body>
+</html>

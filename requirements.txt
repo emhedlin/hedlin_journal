@@ -1,0 +1,24 @@
+# DOCX parsing
+python-docx>=1.1.0
+
+# Templates
+Jinja2>=3.1.0
+
+# Markdown processing
+markdown>=3.5.0
+
+# Embeddings for timeline summaries
+sentence-transformers>=2.2.0
+
+# Image processing
+Pillow>=10.0.0
+
+# PDF generation (for later stages)
+weasyprint>=60.0
+
+# CLI utilities
+click>=8.1.0
+rich>=13.0.0
+
+# Date parsing
+python-dateutil>=2.8.0
