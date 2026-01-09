@@ -271,7 +271,9 @@ def generate_site(
                 entry={
                     **entry,
                     'prev': prev_entry['url'] if prev_entry else None,
-                    'next': next_entry['url'] if next_entry else None
+                    'next': next_entry['url'] if next_entry else None,
+                    'year': entry['year'],
+                    'month': entry['month']
                 }
             )
 

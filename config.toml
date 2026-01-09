@@ -10,7 +10,7 @@ hover = "#000000"
 
 [preview]
 # Number of words to show in entry preview
-word_count = 8
+word_count = 30
 
 [site]
 title = "A Hedlin Family Journal"
