@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install markdown jinja2 rich
+          pip install markdown jinja2 rich tomli
 
       - name: Generate site
         run: |
