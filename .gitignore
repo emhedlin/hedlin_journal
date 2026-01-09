@@ -3,7 +3,6 @@
 venv/
 
 # Generated output
-output/
 data/
 
 # Python
