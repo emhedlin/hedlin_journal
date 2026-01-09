@@ -40,8 +40,15 @@ a {
     transition: opacity 0.2s;
 }
 
-a:hover {
-    opacity: 0.7;
+a:hover,
+a:visited,
+a:active {
+    color: var(--color-text);
+}
+
+/* Remove mobile tap highlight */
+a, button {
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Layout */
