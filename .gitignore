@@ -2,8 +2,14 @@
 .venv/
 venv/
 
+# Google Docs credentials (never commit)
+credentials.json
+
 # Generated output
 data/
+
+# Build cache (regenerated from Google Drive)
+content/images/
 
 # Python
 __pycache__/
@@ -24,3 +30,6 @@ Thumbs.db
 # Build artifacts
 build_state.json
 journal_entries.json
+
+# Generated site (deployed via GitHub Actions)
+output/
