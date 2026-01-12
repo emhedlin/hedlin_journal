@@ -1,0 +1,29 @@
+---
+title: "Tuesday, August 30"
+date: "1983-08-30"
+date_display: "Tuesday, August 30"
+tags: []
+people: []
+images: []
+source_file: "example"
+---
+
+Matthew had the best sleep of his life, from 9 pm to 8 am, with a quick diaper change at 6:30. But then he had one of the unhappiest days of his life. He has a cold in his nose and doesn’t want to be left alone. He followed Cheryl into the kitchen and pulled her by the hand into the living room where he used all his weight to push her into a chair. Whenever Peter went outside Matthew thumped the door and cried.
+
+Cheryl spent her morning with Matthew so that I could meet tomorrow’s deadline on my ‘future problems’ assignment. Peter practised cello this morning for 30 minutes. Cheryl is having him practise difficult sections many times over. I asked him later if he was looking forward to lessons in the Fall.
+
+“Yes,” he said, “no.”
+
+Cheryl took Matthew for groceries, returned to put him to bed and left again to pick up some material.
+
+Today we can deposit my pay-cheque. Good thing. We got another NSF notice from the bank. First Super Value, now London Life. Never before. And with a seven dollar charge on these things, never again. Cheryl wants to recover from our shame by leaving the bank. I think we should use blustering techniques, tell them that we think they are giving us rotten service, and that we might just change banks if they don’t shape up.
+
+After dinner (Peter was crazy about pita bread) we went to the bank, then to Market Mall to look for glasses ($93 for frames). Matthew licked the windows of a telephone booth. A girl watched him from the inside with a funny smile. We went to Super Value to pay for the cheque amount and find other frames (which we bought for $54). We closed with a cold drink at Smitty’s.
+
+At home I do more work on the project. Peter types “the fox ran fast” and talks so that I can’t think. Supper is stew. We give Peter the choice between meat and potatoes and try to get him to sit down long enough to get one of them in his mouth. He talks and forgets where he is. He tried to get an ice-cube out of Cheryl’s cold water with his hand without seeming to notice he’s doing it; though he’s wet halfway to his elbow.  Cheryl showed surprise, and Peter kept talking.
+
+He is staying the night at Mama’s and Papa’s. We drove him over with his stuff. He will be going downtown by bus tomorrow. Matthew and I walked down the block. He got his foot stuck in the edging of someone’s yard. We went to Ryden’s for another cold drink. I think they store the day’s heat somewhere and release it slowly in the evening.  They must sell more that way.
+
+Peter went home with Mama and Papa. We got the bright idea to get Matthew ready for bed and drive until he fell asleep. We found Carol and Les working at their house. We talked for a half hour and drove home.  It was 9:30. Matthew was put in bed, I read, Cheryl sewed. I think history will not treat the two of us on equal terms.
+
+---

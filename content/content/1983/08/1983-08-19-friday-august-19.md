@@ -1,0 +1,55 @@
+---
+title: "Friday, August 19"
+date: "1983-08-19"
+date_display: "Friday, August 19"
+tags: []
+people: []
+images: []
+source_file: "example"
+---
+
+Today was full. Matthew was up early even though Cheryl had stuffed him with fruit and kept him up till late. We breakfasted on Variety-Pak cereal and eggs. After we dressed, Peter and I played frisbee outside the cabin and tossed bread to squirrels. Even though the sky cleared overnight a cold breeze blew off the lake. All of us dressed with our heaviest clothes and walked down Waskesiu Drive to the townsite. We searched for formula for Matthew with no luck. We went to the Park Centre Cafe, waited behind two RCMP, and ordered 2 coffees, an ice-cream cone and toast. Peter sat with us until his cone was finished, then sat alone in the far corner to watch the computer characters flow across a video game screen. A waitress watched him sitting with his hands on the machine. She put money in it and instructed him on how to play Pac Man. Pinky ate him twice in 27 seconds to end the game. As we sat with our coffee, talking and watching others stroll in, we decided to drive to P.A. that morning for the formula. We walked back to the cabin. Matthew fell asleep on my back. I could see by our shadow that Matthew’s head had fallen straight back.
+
+We were in the car by 10:30. After dropping by the Nature Centre to find the time for the Bears and Man film we set out for P.A. The sun was warm.
+
+We arrived at the Eaton’s Mall by 11:30. Both boys slept so Cheryl went down first. When they woke three minutes later we went down and met her at Zellars. After a few buys we ate at Smitty’s and left. Peter bought a chocolate bar at “Boots”.
+
+The time was 1:20 when I gassed up north of P.A. The show was at 2:00. We couldn’t make it by then but drove 70 anyway. Peter dripped chocolate on himself.
+
+We were in Waskesiu by 2:10, enough time for Peter and Cheryl to see most of it. Matthew and I walked on the lake shore path outside the Nature Centre. After the film we rushed to the cabin and were changed and ready for the beach by 2:40. We followed Matthew everywhere, kept stones out of his mouth and helped him dig holes and build the “Lonely Mountain” in the sand. We visited with Carl Krause, walked along the beach until Peter squashed a rotten fish head with his bare foot, skipped stones, pulled Matthew off of the seat of someone else’s tricycle, pushed the boys on the swing, read little bits, played frisbee, got Peter away from the oscillating merry-go-round, walked Matthew along the water edge, and so on. The sun was tepid. At one point Peter ran up from the lake.
+
+“Dad, can we dig a hole as deep as that man is digging?”
+
+Cheryl looked for that man and said to me: “That man is actually a very very very big boy.”
+
+He was sitting in a hole like layers of whipped cream in a bowl. Beside him was a pulsing dome of hairy fleshy father-hood.
+
+We carried out our supper plans to eat at Paignton beach. After we got the food together we drove out. We roasted wieners and marshmallows, made hot dogs and “smores”, kept Matthew off the ground by feeding him buns, and listened to Peter, “Boy, this lake is so beautiful. I love it here.” The sun was brilliant, the lake was golden, the breeze was clean. Cheryl and I squatted by the fire with sticks and the boys giggled with mouths full of bread. So simple and to the point, so much time just to “be” there.
+
+We drove on to the Narrows. Around the corner a wolf squatted on the road then loped easily past us without looking a second time. We spent only a moment watching a girl cast from shore then returned, driving slowly, hoping to see wildlife.
+
+Suddenly Peter said: “I see something.”
+
+“A tree?” I asked.
+
+“No, something much lovelier.”
+
+“What?”
+
+“A bear.”
+
+We were home by 8:30. Matthew bathed in a hand basin. Peter changed, had his face washed and got into bed. We read The Hobbit. Cheryl walked with Matthew down to the lake and the swings.
+
+Peter lay in his room, silent for a moment, then he belched. “Excuse me.”
+
+“Ok Peter.”
+
+“Did you hear that?”
+
+“Yes I did Peter.”
+
+“It sounded like a skid.”
+
+Cheryl finally came in. She put Matthew down. We read.
+
+---

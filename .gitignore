@@ -4,6 +4,8 @@ venv/
 
 # Google Docs credentials (never commit)
 credentials.json
+token.json
+client_secret.json
 
 # Generated output
 data/

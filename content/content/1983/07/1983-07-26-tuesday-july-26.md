@@ -1,0 +1,21 @@
+---
+title: "Tuesday, July 26"
+date: "1983-07-26"
+date_display: "Tuesday, July 26"
+tags: []
+people: []
+images: []
+source_file: "example"
+---
+
+Matthew seems to have rescheduled his nights. Now they run from 8:30 pm – 6:30 am. He was up several times last night after 4. One final effort was made at 6. He cried on my shoulder awhile. I laid him in his bed. He raised himself up. I lowered him down. He cried. I said, “Lay down.” Then he did. “Just maybe,” I hoped. He was silent, so I left. From our bedroom I could hear him flap the blinds and laugh. The night was done.
+
+We took the Toyota for a 78,000 km check-up to the new 42nd street facilities. The Mazda was taken out of dry-dock. I don’t like using it because the door bangs and jams when someone pulls it open. Cheryl was appalled by the dust in it. A cobweb had formed on the passenger window. She called me a pig. Peter and I laughed. Peter has been excitable today, talkative, affectionate towards Matthew, active with us. His mood was further improved at swimming lessons. He earned his Orange badge. He starts in Red tomorrow. More gyprocing was done in the basement. It seems to go slowly, although I’m pleased with the job so far. I’m surprised there haven’t been more complications. I’m teaching myself: read and hammer, then read and hammer some more.
+
+On the drive to Toyota this afternoon the boys entertained each other. Matthew looked around the side of his seat for Peter. Peter did silly stunts for him. We go to Burger King for supper before Cheryl returned to Lathey for her swim. She drove the Toyota. I took the boys in the Mazda. Peter imagines me committing crimes with the car. To drive without seatbelts, he thinks, is as serious as anything. The police have a mandate to argue with citizens, throw “mufflers” all over their bodies and take them to jail. He would like to see it done to me.
+
+Peter was invited to stay the night with Cheryl’s parents. We watched Lifelines, a Channel 2 documentary about notable doctors in the United States. Meagen, Peter’s friend, came over to play. Peter preferred to watch the show, this one about a car accident and two Jehovah Witness women with multiple “stub” wounds. Peter and Cheryl left when the show was done. I bathed Matthew and put him to bed. He has been entirely happy and affectionate today. He seems fearless, innocent. He slept with his head in my lap, an open-mouth smile. When Cheryl arrived at her parents she visited awhile. Peter was impatient to begin his night “for real”. When she made the slightest motion to get up he said, “Bye mom.”
+
+Crystal Torgenrud phoned to say she would sit for us tomorrow night and Thursday – a birthday, you know. Cheryl is asleep, “stealing time” from Matthew.
+
+---

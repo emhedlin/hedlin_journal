@@ -3,17 +3,19 @@
 Complete build pipeline for the Hedlin Family Journal.
 
 This script runs the full build process:
-1. Parse DOCX files to JSON
+1. Parse source files (DOCX or Google Docs) to JSON
 2. Convert to Markdown
 3. Generate HTML website
 4. Generate embeddings for timeline
 5. Generate PDFs
 
 Usage:
-    python scripts/build_all.py [--force] [--year YEAR]
+    python scripts/build_all.py [--source docx|gdocs] [--force] [--year YEAR]
 """
 
 import argparse
+import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -24,6 +26,9 @@ from rich.panel import Panel
 from rich.table import Table
 
 console = Console()
+
+# Default configuration
+DEFAULT_SOURCE = "docx"  # Can be overridden by config.toml
 
 
 def run_step(name: str, cmd: list, cwd: Path = None) -> bool:
@@ -45,9 +50,73 @@ def run_step(name: str, cmd: list, cwd: Path = None) -> bool:
     return True
 
 
+def load_config() -> dict:
+    """Load configuration from config.toml if it exists."""
+    config_file = Path.cwd() / "config.toml"
+    if config_file.exists():
+        try:
+            import tomli
+            with open(config_file, 'rb') as f:
+                return tomli.load(f)
+        except ImportError:
+            console.print("[yellow]tomli not installed, using default config[/yellow]")
+        except Exception as e:
+            console.print(f"[yellow]Error loading config: {e}[/yellow]")
+    return {}
+
+
+def get_source(config: dict, arg_source: str = None) -> str:
+    """Determine the source type from config or argument."""
+    if arg_source:
+        return arg_source
+    # Check config.toml for source setting
+    if 'source' in config:
+        return config['source'].get('mode', DEFAULT_SOURCE)
+    return DEFAULT_SOURCE
+
+
+def get_gdocs_config(config: dict) -> dict:
+    """Get Google Docs configuration."""
+    return config.get('gdocs', {})
+
+
+def run_fetch_from_gdocs(gdocs_config: dict, output_dir: Path) -> bool:
+    """Run fetch_from_gdocs.py with appropriate configuration."""
+    credentials = gdocs_config.get('credentials', 'credentials.json')
+    folder_id = gdocs_config.get('folder_id', '')
+
+    if not folder_id:
+        console.print("[red]Error: gdocs.folder_id not configured in config.toml[/red]")
+        return False
+
+    if not Path(credentials).exists():
+        console.print(f"[red]Error: Credentials file not found: {credentials}[/red]")
+        console.print("\n[yellow]To set up Google Cloud:[/yellow]")
+        console.print("1. Create a Google Cloud Project")
+        console.print("2. Enable Docs API and Drive API")
+        console.print("3. Create a service account and download credentials")
+        console.print("4. Share your Drive folder with the service account")
+        return False
+
+    return run_step(
+        "Fetch from Google Docs",
+        ["python", "scripts/fetch_from_gdocs.py",
+         "--credentials", credentials,
+         "--folder-id", folder_id,
+         "--output", str(output_dir)]
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Complete build pipeline for Hedlin Family Journal"
+    )
+    parser.add_argument(
+        "--source", "-s",
+        type=str,
+        choices=["docx", "gdocs"],
+        default=None,
+        help="Source type: 'docx' or 'gdocs' (default: from config.toml or 'docx')"
     )
     parser.add_argument(
         "--force", "-f",
@@ -78,6 +147,13 @@ def main():
 
     args = parser.parse_args()
 
+    # Load configuration
+    config = load_config()
+
+    # Determine source type
+    source = get_source(config, args.source)
+    gdocs_config = get_gdocs_config(config)
+
     # Dev mode shortcuts
     if args.dev:
         args.skip_pdf = True
@@ -88,24 +164,38 @@ def main():
 
     console.print(Panel.fit(
         "[bold cyan]Hedlin Family Journal[/bold cyan]\n"
-        "Complete Build Pipeline",
+        f"Complete Build Pipeline [dim](source: {source})[/dim]",
         border_style="cyan"
     ))
 
-    # Base command arguments
-    base_args = ["-i", "docs", "-d", "data", "-o", "."]
-    if args.force:
-        base_args.append("--force")
-    if args.year:
-        base_args.extend(["--year", str(args.year)])
-
+    data_dir = Path("data")
     steps = []
 
-    # Step 1: Build (DOCX → JSON → Markdown)
-    steps.append((
-        "Parse DOCX & Generate Markdown",
-        ["python", "scripts/build.py"] + base_args
-    ))
+    # Step 1: Fetch/Parse entries based on source
+    if source == "gdocs":
+        # Fetch from Google Docs (produces journal_entries.json)
+        if not run_fetch_from_gdocs(gdocs_config, data_dir):
+            console.print("[red]Failed to fetch from Google Docs[/red]")
+            return 1
+        # Convert JSON to Markdown
+        steps.append((
+            "Convert JSON to Markdown",
+            ["python", "scripts/json_to_markdown.py",
+             "-i", str(data_dir / "journal_entries.json"),
+             "-o", "content"]
+        ))
+    else:
+        # Parse DOCX files
+        base_args = ["-i", "docs", "-d", str(data_dir), "-o", "."]
+        if args.force:
+            base_args.append("--force")
+        if args.year:
+            base_args.extend(["--year", str(args.year)])
+
+        steps.append((
+            "Parse DOCX & Generate Markdown",
+            ["python", "scripts/build.py"] + base_args
+        ))
 
     # Step 2: Generate HTML website
     steps.append((

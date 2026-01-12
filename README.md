@@ -1,9 +1,10 @@
 
-A static website generator for family journals, built from Microsoft Word (DOCX) files. Features an interactive timeline, search capabilities, and PDF export.
+A static website generator for family journals. Built from **Google Docs** or Microsoft Word (DOCX) files. Features an interactive timeline, search capabilities, and PDF export.
 
 ## Features
 
-- **DOCX Import** - Parse journal entries from Word documents
+- **Google Docs Integration** - Collaborative editing in the browser
+- **DOCX Import** - Parse journal entries from Word documents (legacy support)
 - **Interactive Timeline** - Canvas-based timeline with hover previews
 - **Semantic Search** - Powered by sentence-transformers embeddings
 - **PDF Export** - Generate print-ready books (6" × 9" format)
@@ -18,7 +19,7 @@ uv venv
 source .venv/bin/activate
 uv pip install -r requirements.txt
 
-# Place your DOCX files in the docs/ directory
+# Configure Google Docs folder ID in config.toml
 # Then build the site
 
 # Development build (fast - skips PDFs and embeddings)
@@ -37,13 +38,15 @@ python scripts/serve.py
 
 ```
 hedlin_journal/
-├── docs/                  # Source DOCX files
+├── config.toml            # Configuration (source mode, folder IDs)
+├── docs/                  # Legacy: Source DOCX files
 │   └── *.docx
 ├── content/               # Generated Markdown (gitignored)
 │   ├── YYYY/MM/
 │   └── images/
 ├── data/                  # Build data (gitignored)
-│   ├── build_state.json
+│   ├── build_state.json   # DOCX build state
+│   ├── gdocs_state.json   # Google Docs state
 │   └── journal_entries.json
 ├── output/                # Generated website (gitignored)
 │   ├── index.html
@@ -53,6 +56,8 @@ hedlin_journal/
 │   └── static/
 ├── scripts/               # Build scripts
 │   ├── build_all.py       # Main build pipeline
+│   ├── fetch_from_gdocs.py # Google Docs → JSON
+│   ├── migrate_to_gdocs.py # DOCX → Google Docs migration
 │   ├── build.py           # DOCX → JSON → Markdown
 │   ├── parse_docx.py      # DOCX parser
 │   ├── generate_html.py   # Markdown → HTML
@@ -66,35 +71,66 @@ hedlin_journal/
 
 ## Usage
 
-### Adding New Entries
+### Google Docs (Recommended)
+
+The journal can be built from Google Docs, enabling collaborative editing by family members.
+
+**Setup:**
+1. Create a Google Drive folder for your journal
+2. Create year folders (1983, 1984, etc.)
+3. Create a Google Doc for each time period (e.g., "1983-entries")
+4. Add the folder ID to `config.toml` under `[gdocs].folder_id`
+
+**Adding/Editing Entries:**
+- Open the Google Doc in your browser
+- Add or edit entries directly
+- Images: Upload to the year's `images/` folder, use `[[image: filename.jpg]]` tag
+- Changes are saved automatically in Google Docs
+- Rebuild when ready: `python scripts/build_all.py`
+
+**Image Tag Examples:**
+```
+[[image: beach-day.jpg]]
+
+[[image: family.jpg, caption: Summer 1983]]
+
+[[image: panorama.jpg, width: 600px]]
+```
+
+**Migration from DOCX:**
+```bash
+# Migrate existing DOCX files to Google Docs (uses OAuth)
+python scripts/migrate_to_gdocs.py --oauth --folder-id YOUR_FOLDER_ID
+```
+
+### DOCX Files (Legacy)
+
+You can still use DOCX files as the source:
 
 **Option 1: Add a new DOCX file**
 ```bash
 # Place your new DOCX file in docs/
 cp my_new_entries.docx docs/
 
-# Rebuild
-python scripts/build_all.py
+# Build from DOCX source
+python scripts/build_all.py --source docx
 ```
 
 **Option 2: Update an existing DOCX file**
 ```bash
 # Edit the DOCX file in place, then rebuild
-python scripts/build_all.py
-```
-
-**Option 3: Edit Markdown directly**
-```bash
-# Markdown files are in content/YYYY/MM/
-# Edit them directly and regenerate HTML
-python scripts/generate_html.py -c content -o output
+python scripts/build_all.py --source docx
 ```
 
 ### Build Commands
 
 ```bash
-# Full build (everything)
+# Build from configured source (Google Docs or DOCX)
 python scripts/build_all.py
+
+# Specify source explicitly
+python scripts/build_all.py --source gdocs   # Google Docs
+python scripts/build_all.py --source docx    # DOCX files
 
 # Development build (skip PDFs and embeddings - much faster)
 python scripts/build_all.py --dev
@@ -102,50 +138,34 @@ python scripts/build_all.py --dev
 # Force rebuild of all files
 python scripts/build_all.py --force
 
-# Specify default year for abbreviated dates
+# Specify default year for abbreviated dates (DOCX only)
 python scripts/build_all.py --year 1983
-
-# Skip only PDFs
-python scripts/build_all.py --skip-pdf
-
-# Skip only embeddings
-python scripts/build_all.py --skip-embeddings
 ```
 
-### Individual Build Steps
+### Deployment
 
+**Build and preview:**
 ```bash
-# Parse DOCX and generate Markdown
-python scripts/build.py -i docs -d data -o .
+# Build from Google Docs
+python scripts/build_all.py
 
-# Generate HTML website only
-python scripts/generate_html.py -c content -o output -t templates -s static
-
-# Generate embeddings for timeline
-python scripts/generate_embeddings.py -i data/journal_entries.json -o output/static/js/embeddings.json
-
-# Generate PDFs
-python scripts/generate_pdf.py -c content -o output -t templates
-```
-
-### Development Server
-
-```bash
-# Start server (default port 8000)
+# Preview locally
 python scripts/serve.py
+```
 
-# Custom port
-python scripts/serve.py --port 3000
-
-# Don't open browser automatically
-python scripts/serve.py --no-browser
+**Deploy to GitHub Pages:**
+```bash
+# Commit the generated output
+git add output/
+git commit -m "Update journal"
+git push
 ```
 
 ## DOCX Format
 
-The parser recognizes date headers in these formats:
+When using DOCX files, the parser recognizes date headers in these formats:
 - `Saturday, July 23, 1983` (full date)
-- `Sunday, July 24` (abbreviated, year inferred)
+- `Sunday, July 24` (abbreviated, year inferred from context)
 
 Entries should be formatted with date headers followed by content. Images embedded in DOCX files will be extracted automatically.
 
@@ -159,59 +179,26 @@ Entries should be formatted with date headers followed by content. Images embedd
 | JSON | `data/journal_entries.json` | Structured entry data |
 | Embeddings | `output/static/js/embeddings.json` | Timeline/search data |
 
-## Deployment
+## Configuration
 
-### GitHub Pages
+Edit `config.toml` to configure:
 
-```bash
-# Build the site
-python scripts/build_all.py
+```toml
+[source]
+# Source mode: "gdocs" (Google Docs) or "docx" (DOCX files)
+mode = "gdocs"
 
-# The output/ directory is ready to deploy
-# Use GitHub Pages with source: output/
+[gdocs]
+# Google Drive folder ID containing journal documents
+folder_id = "your-folder-id-here"
+credentials = "credentials.json"
+
+[theme]
+# Color palette
+background = "#f5f5f5"
+text = "#131313"
+
+[site]
+title = "Some Same"
 ```
 
-### Netlify
-
-```bash
-# Deploy output/ directory
-netlify deploy --prod --dir=output
-```
-
-### Any Static Host
-
-The `output/` directory is a self-contained static site. Upload it to any web host.
-
-## Requirements
-
-- Python 3.11+
-- uv (recommended) or pip
-- Dependencies in `requirements.txt`
-
-## Development
-
-### Adding New Features
-
-The codebase is organized around a clear pipeline:
-
-```
-DOCX → JSON → Markdown → HTML → Website
-                ↓
-            Embeddings → Timeline
-                ↓
-                PDF
-```
-
-Each stage has its own script in `scripts/`:
-
-| Script | Purpose |
-|--------|---------|
-| `parse_docx.py` | Extract entries from DOCX |
-| `build.py` | Incremental DOCX → Markdown |
-| `generate_html.py` | Markdown → HTML |
-| `generate_embeddings.py` | Create embeddings for search |
-| `generate_pdf.py` | Generate PDF output |
-
-## License
-
-Family project - use as you wish for your own family journals.
