@@ -180,6 +180,14 @@ def extract_images(doc: Document, output_dir: Path, source_name: str) -> dict[in
 import io
 
 
+def extract_year_from_filename(filename: str) -> Optional[int]:
+    """Extract a 4-digit year from a filename (e.g., 'Hedlin Family Journal 1984.docx' -> 1984)."""
+    match = re.search(r'\b(19\d{2}|20\d{2})\b', filename)
+    if match:
+        return int(match.group(1))
+    return None
+
+
 def parse_docx_file(
     docx_path: Path,
     output_dir: Path,
@@ -217,16 +225,21 @@ def parse_docx_file(
             title = text
             break
 
-    # Set default year from first full date if not provided
+    # Set default year: 1) from filename, 2) from first full date, 3) use 1900 as safe default
+    if default_year is None:
+        default_year = extract_year_from_filename(docx_path.name)
+        if default_year:
+            console.print(f"[dim]Using year from filename: {default_year}[/dim]")
+
     if default_year is None:
         for para in doc.paragraphs:
             date_obj, _ = extract_date_from_text(para.text)
             if date_obj:
                 default_year = date_obj.year
-                console.print(f"[dim]Detected default year: {default_year}[/dim]")
+                console.print(f"[dim]Detected default year from content: {default_year}[/dim]")
                 break
 
-    last_year = default_year or datetime.now().year
+    last_year = default_year or 1900
 
     # Second pass: extract entries
     for para_idx, para in enumerate(doc.paragraphs):
