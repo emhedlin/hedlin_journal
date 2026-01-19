@@ -1,7 +1,7 @@
 /**
  * Hedlin Family Journal - Tree Navigation
  *
- * Nested expandable tree: Years → Months → Entries → Content
+ * Nested expandable tree: Years → Months → Entries
  */
 
 class JournalTree {
@@ -11,38 +11,21 @@ class JournalTree {
     }
 
     init() {
-        // Attach click handlers to all toggle buttons
-        const toggles = this.tree.querySelectorAll('.tree-toggle');
-        toggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.toggleNode(toggle);
-            });
-        });
-
-        // Allow clicking on the label to toggle as well
+        // Attach click handlers to all tree labels (which contain the toggle)
         const labels = this.tree.querySelectorAll('.tree-label');
         labels.forEach(label => {
             label.addEventListener('click', (e) => {
                 const node = label.parentElement;
-                const toggle = node.querySelector('.tree-toggle');
-                if (toggle) {
-                    this.toggleNode(toggle);
-                }
+                this.toggleNode(node);
             });
         });
 
-        // Allow clicking on entry preview row to toggle
-        const previewRows = this.tree.querySelectorAll('.entry-preview-row');
-        previewRows.forEach(row => {
-            row.addEventListener('click', () => {
-                const node = row.parentElement;
-                const toggle = node.querySelector('.tree-toggle');
-                if (toggle) {
-                    this.toggleNode(toggle);
-                }
+        // Entry clicks should navigate, not toggle
+        const entries = this.tree.querySelectorAll('.tree-entry');
+        entries.forEach(entry => {
+            entry.addEventListener('click', (e) => {
+                // Let default link behavior happen
             });
-            row.style.cursor = 'pointer';
         });
 
         // Handle URL hash on load to restore expanded state
@@ -54,9 +37,19 @@ class JournalTree {
         });
     }
 
-    toggleNode(toggle) {
-        const node = toggle.parentElement;
+    updateHasExpandedClass() {
+        // Check if any year or month nodes are expanded
+        const hasExpanded = this.tree.querySelector('.tree-node.expanded');
+        if (hasExpanded) {
+            this.tree.classList.add('has-expanded');
+        } else {
+            this.tree.classList.remove('has-expanded');
+        }
+    }
+
+    toggleNode(node) {
         const children = node.querySelector('.tree-children');
+        const toggle = node.querySelector('.tree-toggle');
 
         if (!children) {
             return; // Leaf node, nothing to toggle
@@ -67,26 +60,36 @@ class JournalTree {
         if (isExpanded) {
             // Collapse
             children.hidden = true;
-            toggle.textContent = '○';
-            toggle.setAttribute('aria-expanded', 'false');
+            if (toggle) toggle.textContent = '○';
+            node.classList.remove('expanded');
+            node.classList.remove('show-line');
         } else {
             // Expand
             children.hidden = false;
-            toggle.textContent = '●';
-            toggle.setAttribute('aria-expanded', 'true');
+            if (toggle) toggle.textContent = '●';
+            node.classList.add('expanded');
+            node.classList.add('show-line');
+
+            // Remove line from siblings (only one expanded level shows line)
+            const parent = node.parentElement;
+            if (parent) {
+                parent.querySelectorAll('.show-line').forEach(n => {
+                    if (n !== node) n.classList.remove('show-line');
+                });
+            }
 
             // Update URL hash to reflect the newly expanded node
             this.updateHash(node);
         }
+
+        // Update has-expanded class on tree container
+        this.updateHasExpandedClass();
     }
 
     updateHash(node) {
         let hash = '';
 
-        if (node.classList.contains('entry-node')) {
-            const entryId = node.dataset.entry;
-            hash = `#${entryId}`;
-        } else if (node.classList.contains('month-node')) {
+        if (node.classList.contains('month-node')) {
             const yearNode = node.closest('.year-node');
             const year = yearNode?.dataset.year;
             const month = node.dataset.month;
@@ -110,19 +113,12 @@ class JournalTree {
         }
 
         // Parse hash formats:
-        // #year-month-day (entry)
         // #year-month (month)
         // #year (year)
-        const matchEntry = hash.match(/^#(\d+)-(\d+)-(\d+)$/);
         const matchMonth = hash.match(/^#(\d+)-(\d+)$/);
         const matchYear = hash.match(/^#(\d+)$/);
 
-        if (matchEntry) {
-            const year = parseInt(matchEntry[1]);
-            const month = parseInt(matchEntry[2]);
-            const day = parseInt(matchEntry[3]);
-            this.expandToEntry(year, month, day);
-        } else if (matchMonth) {
+        if (matchMonth) {
             const year = parseInt(matchMonth[1]);
             const month = parseInt(matchMonth[2]);
             this.expandToMonth(year, month);
@@ -137,10 +133,19 @@ class JournalTree {
         if (yearNode) {
             const toggle = yearNode.querySelector('.tree-toggle');
             const children = yearNode.querySelector('.tree-children');
-            if (toggle && children) {
+            if (children) {
                 children.hidden = false;
-                toggle.textContent = '●';
-                toggle.setAttribute('aria-expanded', 'true');
+                if (toggle) toggle.textContent = '●';
+                yearNode.classList.add('expanded');
+                yearNode.classList.add('show-line');
+
+                // Remove line from other years
+                this.tree.querySelectorAll('.year-node.show-line').forEach(n => {
+                    if (n !== yearNode) n.classList.remove('show-line');
+                });
+
+                // Update has-expanded class
+                this.updateHasExpandedClass();
             }
         }
     }
@@ -153,32 +158,19 @@ class JournalTree {
         if (monthNode) {
             const toggle = monthNode.querySelector('.tree-toggle');
             const children = monthNode.querySelector('.tree-children');
-            if (toggle && children) {
+            if (children) {
                 children.hidden = false;
-                toggle.textContent = '●';
-                toggle.setAttribute('aria-expanded', 'true');
-            }
-        }
-    }
+                if (toggle) toggle.textContent = '●';
+                monthNode.classList.add('expanded');
+                // Note: Don't add show-line to months - entries don't have bullets
 
-    expandToEntry(year, month, day) {
-        this.expandToMonth(year, month);
-        const entryNode = this.tree.querySelector(
-            `.year-node[data-year="${year}"] .month-node[data-month="${month}"] ` +
-            `.entry-node[data-entry="${year}-${month}-${day}"]`
-        );
-        if (entryNode) {
-            const toggle = entryNode.querySelector('.tree-toggle');
-            const children = entryNode.querySelector('.tree-children');
-            if (toggle && children) {
-                children.hidden = false;
-                toggle.textContent = '●';
-                toggle.setAttribute('aria-expanded', 'true');
-
-                // Scroll the entry into view
-                setTimeout(() => {
-                    entryNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                // Remove line from other months in this year
+                const yearNode = monthNode.closest('.year-node');
+                if (yearNode) {
+                    yearNode.querySelectorAll('.month-node.show-line').forEach(n => {
+                        n.classList.remove('show-line');
+                    });
+                }
             }
         }
     }

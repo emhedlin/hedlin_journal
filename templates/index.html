@@ -3,66 +3,39 @@
 {% block title %}Journal{% endblock %}
 
 {% block content %}
-<div class="accordion-nav" id="accordion">
-    <!-- Years Level -->
-    <div class="nav-level" data-level="years">
-        {% for year in years %}
-        <button class="nav-item{% if not year.has_entries %} muted{% endif %}"
-                data-year="{{ year.year }}">
-            {{ year.year }}
-        </button>
-        {% endfor %}
+<div class="tree-nav" id="tree">
+    {% for year in years %}
+    <div class="tree-node year-node" data-year="{{ year.year }}" data-has-entries="{{ 'true' if year.has_entries else 'false' }}">
+        <div class="tree-label">
+            <span class="tree-toggle">○</span>
+            <span class="tree-text">{{ year.year }}</span>
+        </div>
+        <div class="tree-children" hidden>
+            {% set year_data = months_by_year|selectattr('year', 'equalto', year.year)|first %}
+            {% if year_data %}
+                {% for month in year_data.months %}
+                <div class="tree-node month-node" data-month="{{ month.number }}" data-has-entries="{{ 'true' if month.has_entries else 'false' }}">
+                    <div class="tree-label">
+                        <span class="tree-toggle">○</span>
+                        <span class="tree-text">{{ month.name }}</span>
+                    </div>
+                    <div class="tree-children" hidden>
+                        {% if month.has_entries %}
+                        {% for entry in month.entries %}
+                        <a class="tree-entry" href="{{ url_path }}{{ entry.url }}">
+                            <span class="entry-day">{{ entry.day }}</span>
+                            <span class="entry-preview">{{ entry.preview }}</span>
+                        </a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-
-    <!-- Months Level -->
-    <div class="nav-level" data-level="months" hidden>
-        <button class="nav-back" id="months-back">← <span id="months-year"></span></button>
-        <div id="months-container"></div>
-    </div>
-
-    <!-- Entries Level -->
-    <div class="nav-level" data-level="entries" hidden>
-        <button class="nav-back" id="entries-back">← <span id="entries-month-year"></span></button>
-        <div id="entries-container"></div>
-    </div>
+    {% endfor %}
 </div>
 
-<script>
-// Data embedded directly for instant loading
-const journalData = {
-    years: [
-        {% for year in years %}
-        { year: {{ year.year }}, hasEntries: {{ 'true' if year.has_entries else 'false' }} }{{ ',' if not loop.last }}
-        {% endfor %}
-    ],
-    months: {
-        {% for year_data in months_by_year %}
-        {{ year_data.year }}: [
-            {% for month in year_data.months %}
-            { name: "{{ month.name }}", number: {{ month.number }}, hasEntries: {{ 'true' if month.has_entries else 'false' }} }{{ ',' if not loop.last }}
-            {% endfor %}
-        ]{{ ',' if not loop.last }}
-        {% endfor %}
-    },
-    entries: {
-        {%- set entry_months = [] %}
-        {%- for year_data in months_by_year %}
-            {%- for month in year_data.months %}
-                {%- if month.has_entries %}
-                    {%- set _ = entry_months.append((year_data.year, month.number, month.entries)) %}
-                {%- endif %}
-            {%- endfor %}
-        {%- endfor %}
-        {%- for year, month_num, entries in entry_months %}
-        "{{ year }}-{{ month_num }}": [
-            {%- for entry in entries %}
-            { day: {{ entry.day }}, url: "{{ url_path }}{{ entry.url }}", preview: "{{ entry.preview }}" }{{ ',' if not loop.last }}
-            {%- endfor %}
-        ]{{ ',' if not loop.last }}
-        {%- endfor %}
-    }
-};
-</script>
-
-<script src="{{ url_path }}/static/js/accordion.js"></script>
+<script src="{{ url_path }}/static/js/tree.js"></script>
 {% endblock %}

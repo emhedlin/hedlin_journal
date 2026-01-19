@@ -11,6 +11,7 @@
     --font-family: "Garamond", "Georgia", "Times New Roman", serif;
     --spacing-unit: 1.5rem;
     --max-width: 600px;
+    --toggle-width: 1.5rem;
 }
 
 /* Reset and Base */
@@ -276,6 +277,132 @@ a, button, .nav-item {
     @page {
         margin: 0.75in;
     }
+}
+
+/* Tree Navigation */
+.tree-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.tree-node {
+    display: flex;
+    flex-direction: column;
+}
+
+.tree-label {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tree-toggle {
+    width: 1.5rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    transition: color 0.2s;
+}
+
+.tree-label:hover .tree-toggle {
+    color: var(--color-text);
+}
+
+.tree-text {
+    font-size: 1rem;
+}
+
+.tree-children {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.5rem;  /* Indentation for nested levels */
+}
+
+.tree-children[hidden] {
+    display: none;
+}
+
+/* Entry items within tree */
+.tree-entry {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0 0.5rem 1.5rem; /* Indent past toggle */
+    text-decoration: none;
+    color: var(--color-text);
+    transition: opacity 0.2s;
+}
+
+.tree-entry:hover {
+    opacity: 0.7;
+}
+
+.tree-entry .entry-day {
+    font-variant-numeric: tabular-nums;
+    min-width: 2rem;
+}
+
+.tree-entry .entry-preview {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+}
+
+/* Muted (no entries) */
+.tree-node[data-has-entries="false"] .tree-text {
+    color: var(--color-muted);
+}
+
+/* Vertical connecting line for year nodes (default state, when nothing expanded) */
+.tree-nav:not(.has-expanded) {
+    position: relative;
+}
+
+.tree-nav:not(.has-expanded) > .tree-node::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--toggle-width) / 2 - 0.5px);
+    top: 0.75rem;
+    bottom: 0.75rem;
+    width: 1px;
+    background-color: var(--color-border);
+    opacity: 0.4;
+}
+
+/* Adjust positioning for first node to start at bullet center */
+.tree-nav:not(.has-expanded) > .tree-node:first-child::before {
+    top: calc(0.75rem + 0.75rem);
+}
+
+/* Adjust positioning for last node to end at bullet center */
+.tree-nav:not(.has-expanded) > .tree-node:last-child::before {
+    bottom: calc(0.75rem + 0.75rem);
+}
+
+/* Position each node relative so its ::before is positioned correctly */
+.tree-nav:not(.has-expanded) > .tree-node {
+    position: relative;
+}
+
+/* Vertical connecting line for expanded nodes (months) */
+.tree-node.show-line > .tree-children {
+    position: relative;
+}
+
+.tree-node.show-line > .tree-children::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--toggle-width) / 2 - 0.5px);
+    top: 0.75rem;
+    bottom: 0.75rem;
+    width: 1px;
+    background-color: var(--color-border);
+    opacity: 0.4;
+}
+
+/* Don't show line for month entries (entries don't have bullets) */
+.tree-node.month-node.show-line > .tree-children::before {
+    display: none;
 }
 
 /* Responsive */
