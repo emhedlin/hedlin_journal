@@ -353,56 +353,28 @@ a, button, .nav-item {
     color: var(--color-muted);
 }
 
-/* Vertical connecting line for year nodes (default state, when nothing expanded) */
-.tree-nav:not(.has-expanded) {
+/* Vertical connecting lines - positioned via JavaScript */
+.tree-nav {
     position: relative;
 }
 
-.tree-nav:not(.has-expanded) > .tree-node::before {
-    content: '';
+.tree-vertical-line {
     position: absolute;
-    left: calc(var(--toggle-width) / 2 - 0.5px);
-    top: 0.75rem;
-    bottom: 0.75rem;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 1px;
-    background-color: var(--color-border);
+    background: var(--color-border);
     opacity: 0.4;
-}
-
-/* Adjust positioning for first node to start at bullet center */
-.tree-nav:not(.has-expanded) > .tree-node:first-child::before {
-    top: calc(0.75rem + 0.75rem);
-}
-
-/* Adjust positioning for last node to end at bullet center */
-.tree-nav:not(.has-expanded) > .tree-node:last-child::before {
-    bottom: calc(0.75rem + 0.75rem);
-}
-
-/* Position each node relative so its ::before is positioned correctly */
-.tree-nav:not(.has-expanded) > .tree-node {
-    position: relative;
-}
-
-/* Vertical connecting line for expanded nodes (months) */
-.tree-node.show-line > .tree-children {
-    position: relative;
-}
-
-.tree-node.show-line > .tree-children::before {
-    content: '';
-    position: absolute;
-    left: calc(var(--toggle-width) / 2 - 0.5px);
-    top: 0.75rem;
-    bottom: 0.75rem;
-    width: 1px;
-    background-color: var(--color-border);
-    opacity: 0.4;
-}
-
-/* Don't show line for month entries (entries don't have bullets) */
-.tree-node.month-node.show-line > .tree-children::before {
+    pointer-events: none;
     display: none;
+}
+
+/* Show only the active level line */
+.tree-nav[data-active-level="years"] .line-years,
+.tree-nav[data-active-level="months"] .line-months,
+.tree-nav[data-active-level="entries"] .line-entries {
+    display: block;
 }
 
 /* Responsive */

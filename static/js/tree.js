@@ -2,11 +2,13 @@
  * Hedlin Family Journal - Tree Navigation
  *
  * Nested expandable tree: Years → Months → Entries
+ * With JavaScript-positioned vertical connecting lines
  */
 
 class JournalTree {
     constructor() {
         this.tree = document.getElementById('tree');
+        this.resizeTimeout = null;
         this.init();
     }
 
@@ -35,16 +37,19 @@ class JournalTree {
         window.addEventListener('hashchange', () => {
             this.handleHashOnLoad();
         });
-    }
 
-    updateHasExpandedClass() {
-        // Check if any year or month nodes are expanded
-        const hasExpanded = this.tree.querySelector('.tree-node.expanded');
-        if (hasExpanded) {
-            this.tree.classList.add('has-expanded');
-        } else {
-            this.tree.classList.remove('has-expanded');
-        }
+        // Update line positions on resize (debounced)
+        window.addEventListener('resize', () => {
+            if (this.resizeTimeout) {
+                clearTimeout(this.resizeTimeout);
+            }
+            this.resizeTimeout = setTimeout(() => {
+                this.updateActiveLevel();
+            }, 100);
+        });
+
+        // Initial line positioning
+        this.updateActiveLevel();
     }
 
     toggleNode(node) {
@@ -68,7 +73,6 @@ class JournalTree {
             children.hidden = false;
             if (toggle) toggle.textContent = '●';
             node.classList.add('expanded');
-            node.classList.add('show-line');
 
             // Remove line from siblings (only one expanded level shows line)
             const parent = node.parentElement;
@@ -82,8 +86,8 @@ class JournalTree {
             this.updateHash(node);
         }
 
-        // Update has-expanded class on tree container
-        this.updateHasExpandedClass();
+        // Update active level and line positions
+        this.updateActiveLevel();
     }
 
     updateHash(node) {
@@ -109,6 +113,7 @@ class JournalTree {
     handleHashOnLoad() {
         const hash = window.location.hash;
         if (!hash) {
+            this.updateActiveLevel();
             return;
         }
 
@@ -125,6 +130,8 @@ class JournalTree {
         } else if (matchYear) {
             const year = parseInt(matchYear[1]);
             this.expandToYear(year);
+        } else {
+            this.updateActiveLevel();
         }
     }
 
@@ -137,15 +144,14 @@ class JournalTree {
                 children.hidden = false;
                 if (toggle) toggle.textContent = '●';
                 yearNode.classList.add('expanded');
-                yearNode.classList.add('show-line');
 
                 // Remove line from other years
                 this.tree.querySelectorAll('.year-node.show-line').forEach(n => {
                     if (n !== yearNode) n.classList.remove('show-line');
                 });
 
-                // Update has-expanded class
-                this.updateHasExpandedClass();
+                // Update active level and line positions
+                this.updateActiveLevel();
             }
         }
     }
@@ -162,7 +168,6 @@ class JournalTree {
                 children.hidden = false;
                 if (toggle) toggle.textContent = '●';
                 monthNode.classList.add('expanded');
-                // Note: Don't add show-line to months - entries don't have bullets
 
                 // Remove line from other months in this year
                 const yearNode = monthNode.closest('.year-node');
@@ -171,8 +176,74 @@ class JournalTree {
                         n.classList.remove('show-line');
                     });
                 }
+
+                // Update active level and line positions
+                this.updateActiveLevel();
             }
         }
+    }
+
+    updateActiveLevel() {
+        const tree = this.tree;
+
+        // Determine the deepest expanded level
+        const hasExpandedEntries = tree.querySelector('.month-node.expanded');
+        const hasExpandedMonths = tree.querySelector('.year-node.expanded');
+
+        if (hasExpandedEntries) {
+            tree.dataset.activeLevel = 'entries';
+            this.positionLine('.line-entries', '.month-node.expanded .tree-entry');
+        } else if (hasExpandedMonths) {
+            tree.dataset.activeLevel = 'months';
+            // Find the expanded year and position line for its months
+            const expandedYear = tree.querySelector('.year-node.expanded');
+            if (expandedYear) {
+                const year = expandedYear.dataset.year;
+                this.positionLine('.line-months', `.year-node[data-year="${year}"] > .tree-children > .month-node`);
+            }
+        } else {
+            tree.dataset.activeLevel = 'years';
+            this.positionLine('.line-years', '.year-node');
+        }
+    }
+
+    positionLine(lineSelector, itemSelector) {
+        const line = this.tree.querySelector(lineSelector);
+        const items = Array.from(this.tree.querySelectorAll(itemSelector));
+
+        if (!line || items.length === 0) {
+            return;
+        }
+
+        // Find the first and last items with visible toggles
+        const firstItem = items[0];
+        const lastItem = items[items.length - 1];
+
+        const firstToggle = firstItem?.querySelector('.tree-toggle');
+        const lastToggle = lastItem?.querySelector('.tree-toggle');
+
+        if (!firstToggle || !lastToggle) {
+            return;
+        }
+
+        // Calculate positions using getBoundingClientRect for accuracy
+        const treeRect = this.tree.getBoundingClientRect();
+        const firstRect = firstToggle.getBoundingClientRect();
+        const lastRect = lastToggle.getBoundingClientRect();
+
+        // Calculate left position (center of toggle)
+        const left = firstRect.left - treeRect.left + (firstRect.width / 2);
+
+        // Calculate top position (center of first toggle)
+        const top = firstRect.top - treeRect.top + (firstRect.height / 2);
+
+        // Calculate bottom position (distance from tree bottom to center of last toggle)
+        const bottom = treeRect.bottom - (lastRect.top + (lastRect.height / 2));
+
+        // Apply positions
+        line.style.left = `${left}px`;
+        line.style.top = `${top}px`;
+        line.style.bottom = `${bottom}px`;
     }
 }
 
