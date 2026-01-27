@@ -34,14 +34,14 @@ console = Console()
 DATE_PATTERNS = [
     # Day of week + Month + Day + Year
     re.compile(
-        r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+'
+        r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s+'
         r'(January|February|March|April|May|June|July|August|September|October|November|December)\s+'
         r'(\d{1,2}),?\s+(\d{4})',
         re.IGNORECASE
     ),
     # Day of week + Month + Day (no year)
     re.compile(
-        r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+'
+        r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s+'
         r'(January|February|March|April|May|June|July|August|September|October|November|December)\s+'
         r'(\d{1,2})\b',
         re.IGNORECASE

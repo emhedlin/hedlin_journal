@@ -1,0 +1,37 @@
+---
+title: "Saturday August 4"
+date: "1990-08-04"
+date_display: "Saturday August 4"
+tags: []
+people: []
+images: []
+source_file: "Hedlin Family Journal 1990.docx"
+---
+
+I wake first and read while the others sleep, then stir. Cheryl is awake by 7:20. While we get ready, Peter and Erik wrestle. We meet Cheryl’s parents by 8:30. We are taken into a back room at Carrow’s. Papa tells us they will begin the 5-day all-expenses gift today. Cheryl argue determinedly that the original plan had been to implement it at Crescent City, not Eureka. Her dad prevailed. The coffee is good.
+
+We pulled out of Santa Rosa by 9:30. The weather was heavy and damp, just like last night. We admired the scenery, came back into vineyard country that covered all the available land, even over the hills. Winery estates sit on top of precipitous slopes. Peter wants a picture. Getting the van to the side involves me nearly causing a roll-over. Surrounded by the hills and orchards and stands of trees, he chooses instead a super-tight close-up of a … tree trunk.
+
+The 101 carries us through rapidly changing geography. From the rolling hills and mixed growth of oak and cottonwood, palm trees and blossoms to the more homogeneous coniferous forests. We pass through towns alternating wine-tasting outlets, motels, sidewalk flea-markets, fruit stalls and gas stations. We leave the congested 101 at Ukiah and follow the twisting Orr Springs Road past sprawling residences, dense commercial, gas stations (one, just before we leave Ukia, is carved out of a tree stump. Its sign over the breezeway reads: ‘World’s Largest Redwood Tree Service Station’), acreages, cattle, even llamas.
+
+The California driving experience thus far has been unique. Very fast—prevailing traffic is at least 10 mph over the posted speed—and winding, and slow, thanks to the intermittent road construction, and steep grades, sharp canyon drop-offs.
+
+Lunch is eaten at the Cottage Inn in Mendocino, which serves breakfast and lunch only. It’s a tidy place full of the work of local artists. We order French Onion soup and a roll. Erik begins the meal behaving peaceably with his brothers. Peter strains his ears trying to listen in on the adult conversations. Matthew draws. At breakfast it was a bank robbery. At lunch it is ‘Midnight’: cars jamming up an intersection. His canker sore hurts, so the bread must be broken into small bits. It is suggested that he gargle with salt water. I take him and a pinch of salt to the bathroom. It’s not long before table decorum begins to unravel. Erik grows more restless and begins punching Peter. We try a game of eye-spy, but he won’t say no matter how long we guess what is ‘red with a statue’. When the soup is served he won’t eat. He says his stomach and ‘froat’ hurt. He wants to go to the bathroom, so I take him, but nothing happens. It is soon obvious that Erik must be removed entirely. As soon as he’s outside, he’s happy. We poke around. He sits on the deck railing for a photograph. Families sit peacefully under umbrellas, eating everything on their plates.
+
+We follow the #1 along the coastline, then inland to Leggett, where we merge onto the 101, and a succession of traffic jams. At one point a lane both north and south have been shut down. Once we sat for 15 minutes. Traffic heading both ways must take turns in convoys. Cheryl reads to Erik in the back. Peter and Matthew sit in the front with Papa and me, cleaning up what’s left of the pistachios, cherries and grapes.
+
+Just before the Avenue of the Giants at Meyers Flat, we come to the Grandfather Tree and Gift Shop. Miles of cars are pulled off to the side, up and below the Eel River bank and basin. It’s a Reggae concert. 12,000 have come in for the day. Many arrived with tents two days ahead. Getting out at the gift shop, with our jeans and not shorts, freshly washed bodies, short hair, we look like real Canadian squares. We sort through the heaps of goods, carvings, t-shirts. Outside, an endless line of people troop past, crossing the road, bringing traffic nearly to a halt. It is very warm. Cheryl and I find a knot-head carving, three t-shirts, and a bag of moss. Cheryl’s mom buys us ice-cream cones.
+
+Upon entering the Avenue of the Giants, we descend sharply into a forest so darkened one’s eyes take a moment to adjust. The road winds past tree trunks ten feet across. Several times we stop for photos. Once where a tree had been felled. The boys climbed to the top and ran its length and back, causing Mama great concern that somewhere between the two ends they’d jump off. We saw two deer. Coming across roadkill, the van engaged in a sort of argument whether it was Bambi or a jackrabbit. We stopped again at a tree with a walking path right through it, again at the Grandfather tree, 950 years old and 250 ft tall, and for the last time at the (privately owned) Drive-Through tree that costs $1/person. We didn’t.
+
+It was getting late by then, and we had a 6 pm check-in at the motel in Arcata. We returned to the 101 past the Pacific Lumber Company, with miles of stacked timber and mills billowing smoke into a wall of fog that hangs perpetually along the coastline. It’s one turn into the wet cloud and the next turn into brilliant sunshine, the difference being the width of the highway. An odd experience.
+
+The 101 runs through Eureka between Humboldt Bay and Arcata Bay. Historic refurbished Victorian model homes sit on both sides.
+
+Once we’ve checked into the motel, Peter and Matthew insist on swimming, in spite of the chilly air. Cheryl sits with them and I take Erik to the Jr Burger, which, like Mcdonald’s, has a play area. He meets two children his age and play Batman while I visit with the parents.
+
+At the appointed time I return and we get ready for supper. Cheryl gets warmer clothes from the van. It’s not until her father points it out that she discovers she has been poking in the keyhole of the wrong van. The giggling begins here. We went to Village Pies just down the street and forced a lone man to free up his table so we could move it together with another. We are served by an aged woman (though likely not as old as she looks) with long greying hair. We order large meals. Cheryl and I eat chicken stir-fry, salad, coffee and ice-cream. Peter gets his full order of chicken fingers. Matthew and Erik order a burger. Cheryl’s parents get the senior rates.
+
+Once done we drive 15 miles around the Bay to Eureka to see particular Victorian houses. The Carson House can’t be accessed because it is a private club, and dogs and women are not allowed. We make the plan to return tomorrow. Papa wants to find the Samoan Cookhouse. Always planning future meals. It is left off 4th, over two bridges, through the fog, into a desolate marshy area straight out of Dickens Great Expectations. The Cookhouse is easy enough to find. Papa wants to explore a lumber museum—hanging on the walls are various items of self-erasure: hooks, saws, axes—and the gift shop. Big Band music plays in the parking lot. Instead of dancing couples and strolling lovers, it’s just us and one child being held or restrained from getting at shelves of Chinaware.
+
+Back at the motel Erik and Matthew are put to bed in Cheryl’s parents’ room. Cheryl sticks a coin in the bed slot and reads a newspaper while it vibrates. She comments on feeling as if she’s about to be ejected through the window. Peter for some reason is smiling to himself.
