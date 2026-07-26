@@ -52,6 +52,12 @@ DATE_PATTERNS = [
         r'(\d{1,2}),?\s+(\d{4})',
         re.IGNORECASE
     ),
+    # Just Month + Day (no weekday, no year)
+    re.compile(
+        r'^(January|February|March|April|May|June|July|August|September|October|November|December)\s+'
+        r'(\d{1,2})\b',
+        re.IGNORECASE
+    ),
 ]
 
 MONTH_MAP = {
@@ -121,6 +127,9 @@ def extract_date_from_text(text: str) -> Optional[tuple[datetime, str]]:
                 else:  # (day, month, day) - abbreviated, no year
                     # We'll need context to determine the year
                     return None, match.group(0)
+
+            elif len(groups) == 2:  # (month, day) - no weekday, no year
+                return None, match.group(0)
 
     return None, None
 
